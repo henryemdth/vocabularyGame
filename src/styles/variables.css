@@ -1,0 +1,114 @@
+:root {
+  --green: #58cc02;
+  --green-dark: #46a001;
+  --green-bg: #d7ffb8;
+  --blue: #1cb0f6;
+  --blue-dark: #1899d6;
+  --blue-bg: #ddf4ff;
+  --orange: #ff9600;
+  --orange-dark: #e08500;
+  --orange-bg: #fff0d4;
+  --red: #ff4b4b;
+  --red-dark: #ea2b2b;
+  --red-bg: #ffe0e0;
+  --purple: #ce82ff;
+  --purple-dark: #b96eff;
+  --purple-bg: #f0e0ff;
+
+  --correct: #58a700;
+  --correct-bg: #d7ffb8;
+  --incorrect: #ea2b2b;
+  --incorrect-bg: #ffe0e0;
+
+  --canvas: #f0f0f0;
+  --surface: #ffffff;
+  --surface-hover: #f7f7f7;
+  --border: #e5e5e5;
+  --text: #2b2b2b;
+  --text-secondary: #777777;
+  --text-muted: #afafaf;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  --font: system-ui, -apple-system, sans-serif;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+}
+
+:root.dark {
+  --green-bg: #1a3a00;
+  --blue-bg: #002a40;
+  --orange-bg: #3a2a00;
+  --red-bg: #3a0000;
+  --purple-bg: #2a0040;
+  --correct-bg: #1a3a00;
+  --incorrect-bg: #3a0000;
+
+  --canvas: #12122a;
+  --surface: #1e1e3a;
+  --surface-hover: #28284a;
+  --border: #3a3a5a;
+  --text: #e8e8f0;
+  --text-secondary: #9999b0;
+  --text-muted: #666680;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--canvas);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input[type="file"]::file-selector-button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-lg);
+}

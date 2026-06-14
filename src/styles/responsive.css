@@ -1,0 +1,22 @@
+@media (max-width: 520px) {
+  .mode-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .setup-card,
+  .results-card {
+    padding: var(--space-lg);
+  }
+
+  .flashcard {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .card-prompt {
+    font-size: 18px;
+  }
+}

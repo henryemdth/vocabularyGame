@@ -1,0 +1,39 @@
+<section id="view-results" class="view">
+  <div class="results-card">
+    <div class="results-icon">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+        <rect width="56" height="56" rx="14" fill="var(--blue-bg)"/>
+        <path d="M16 28l8 8 16-16" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2 class="results-title">Session Complete</h2>
+    <p id="result-score" class="result-score">0 / 0</p>
+    <p id="result-pct" class="result-pct">0% Accuracy</p>
+    <div class="result-breakdown">
+      <div class="result-row result-correct">
+        <span>Correct</span>
+        <span id="result-correct">0</span>
+      </div>
+      <div class="result-row result-incorrect">
+        <span>Incorrect</span>
+        <span id="result-incorrect">0</span>
+      </div>
+    </div>
+    <p id="result-time" class="result-time">Time: 0s</p>
+    <div class="results-actions">
+      <button id="play-again-btn" class="start-btn">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 9a6 6 0 1112 0 6 6 0 01-12 0z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M10 6v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Play Again
+      </button>
+      <button id="new-deck-btn" class="new-deck-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Upload New Deck
+      </button>
+    </div>
+  </div>
+</section>

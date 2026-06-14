@@ -1,0 +1,187 @@
+.game-container {
+  max-width: 480px;
+  width: 100%;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.card-progress {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.configure-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.configure-btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  transform: rotate(60deg);
+}
+
+.timer-track {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  margin-bottom: var(--space-lg);
+  overflow: hidden;
+}
+
+.timer-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s linear;
+  width: 100%;
+  background: linear-gradient(90deg, var(--green), var(--orange), var(--red));
+}
+
+.flashcard {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: var(--space-xxl) var(--space-lg);
+  text-align: center;
+  box-shadow: var(--shadow);
+  margin-bottom: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.flashcard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--blue-bg) 50%, transparent), transparent);
+  pointer-events: none;
+}
+
+.card-prompt {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.4;
+  word-break: break-word;
+  position: relative;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.option-btn {
+  padding: 20px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  word-break: break-word;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.option-btn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--opt-color);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--opt-color);
+  background: var(--opt-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.option-btn:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.option-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.option-btn.correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+  color: var(--correct);
+  font-weight: 700;
+  box-shadow: 0 0 0 3px rgba(88, 167, 0, 0.2);
+}
+
+.option-btn.correct::before {
+  display: none;
+}
+
+.option-btn.incorrect {
+  border-color: var(--incorrect);
+  background: var(--incorrect-bg);
+  color: var(--incorrect);
+  box-shadow: 0 0 0 3px rgba(234, 43, 43, 0.2);
+}
+
+.option-btn.incorrect::before {
+  display: none;
+}
+
+.feedback {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feedback-correct {
+  background: var(--correct-bg);
+  color: var(--correct);
+}
+
+.feedback-incorrect {
+  background: var(--incorrect-bg);
+  color: var(--incorrect);
+}
+
+.feedback-timeout {
+  background: var(--orange-bg);
+  color: var(--orange-dark);
+}

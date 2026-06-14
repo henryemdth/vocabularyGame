@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro";
+import HamburgerMenu from "../components/HamburgerMenu.astro";
+import DarkToggle from "../components/DarkToggle.astro";
+import SetupView from "../components/SetupView.astro";
+import GameView from "../components/GameView.astro";
+import ResultsView from "../components/ResultsView.astro";
+---
+
+<Base>
+  <HamburgerMenu />
+  <DarkToggle />
+  <SetupView />
+  <GameView />
+  <ResultsView />
+</Base>
+
+<script>
+  import { init } from "../scripts/game.js";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+</script>

@@ -1,0 +1,22 @@
+<div class="hamburger-menu" id="hamburger">
+  <button class="hamburger-btn" id="hamburger-btn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="hamburger-dropdown">
+    <button class="menu-item" id="menu-load">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Load JSON
+    </button>
+    <input type="file" id="file-input" accept=".json" hidden />
+    <button class="menu-item" id="menu-start" disabled>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M4 2v12l10-6L4 2z" fill="currentColor"/>
+      </svg>
+      Start Game
+    </button>
+    <div class="menu-divider"></div>
+    <div class="menu-info" id="menu-info">No deck loaded</div>
+  </div>
+</div>
