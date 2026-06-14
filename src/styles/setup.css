@@ -52,6 +52,16 @@
   box-shadow: 0 6px 20px rgba(88, 204, 2, 0.4);
 }
 
+.upload-btn-default {
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  margin-top: var(--space-sm);
+}
+
+.upload-btn-default:hover {
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+}
+
 .json-hint {
   margin-top: var(--space-lg);
   text-align: left;

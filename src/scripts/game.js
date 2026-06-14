@@ -214,6 +214,26 @@ function goToSetup() {
   showView("view-setup");
 }
 
+function loadDefaultDeck() {
+  const errorEl = document.getElementById("upload-error");
+  errorEl.textContent = "";
+  errorEl.style.display = "none";
+
+  try {
+    const el = document.getElementById("default-vocab-data");
+    if (!el || !el.dataset.value) throw new Error("Default deck data not found");
+    const data = JSON.parse(el.dataset.value);
+    validateVocabulary(data);
+    store.rawVocabulary = data;
+    saveToStorage(data);
+    refreshSetupView();
+    showView("view-setup");
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.style.display = "block";
+  }
+}
+
 export function init() {
   initDarkMode();
 
@@ -239,8 +259,11 @@ export function init() {
   });
 
   document.getElementById("menu-load").addEventListener("click", () => {
-    document.getElementById("file-input").click();
     closeMenu();
+    showView("view-setup");
+    document.getElementById("setup-empty").style.display = "block";
+    document.getElementById("setup-ready").style.display = "none";
+    document.getElementById("upload-error").style.display = "none";
   });
 
   document.getElementById("menu-start").addEventListener("click", startGame);
@@ -248,6 +271,8 @@ export function init() {
   document.getElementById("upload-inline-btn").addEventListener("click", () => {
     document.getElementById("file-input").click();
   });
+
+  document.getElementById("load-default-btn").addEventListener("click", loadDefaultDeck);
 
   document.getElementById("file-input").addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -271,6 +296,7 @@ export function init() {
         store.rawVocabulary = data;
         saveToStorage(data);
         refreshSetupView();
+        showView("view-setup");
       } catch (err) {
         errorEl.textContent = err.message;
         errorEl.style.display = "block";

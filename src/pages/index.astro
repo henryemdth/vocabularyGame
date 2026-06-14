@@ -5,6 +5,7 @@ import DarkToggle from "../components/DarkToggle.astro";
 import SetupView from "../components/SetupView.astro";
 import GameView from "../components/GameView.astro";
 import ResultsView from "../components/ResultsView.astro";
+import defaultVocab from "../../data.json";
 ---
 
 <Base>
@@ -14,6 +15,8 @@ import ResultsView from "../components/ResultsView.astro";
   <GameView />
   <ResultsView />
 </Base>
+
+<div id="default-vocab-data" data-value={JSON.stringify(defaultVocab)} hidden></div>
 
 <script>
   import { init } from "../scripts/game.js";
