@@ -34,6 +34,15 @@ export function getPrompt(current, mode) {
     : { prompt: current.word, answerKey: "meaning" };
 }
 
+export function showView(id) {
+  document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
+  $(id).classList.add("active");
+}
+
+export function closeMenu() {
+  document.getElementById("hamburger").classList.remove("open");
+}
+
 export function validateVocabulary(data) {
   if (typeof data !== "object" || data === null || Array.isArray(data)) {
     throw new Error("JSON must be a flat object { key: value }");

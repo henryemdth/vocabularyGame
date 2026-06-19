@@ -1,75 +1,13 @@
 import { store } from "./store.js";
-import { $, shuffle, sampleRandom, generateOptions, getPrompt, validateVocabulary } from "./utils.js";
-import { CountdownTimer, TIMER_SECONDS, FEEDBACK_DELAY, OPT_COLORS, OPT_BGS } from "./timer.js";
-import { saveToStorage, loadFromStorage, initDarkMode, toggleDark } from "./storage.js";
+import { $, generateOptions, getPrompt, showView, closeMenu } from "./utils.js";
+import { CountdownTimer, OPT_COLORS, OPT_BGS } from "./timer.js";
+import { loadFromStorage, initDarkMode, toggleDark } from "./storage.js";
+import { refreshSetupView, setupReadyInit } from "./setup-ready.js";
+import { setupInit, newDeck } from "./setup.js";
 
 let timer = null;
-let startTime = 0;
 
-function showView(id) {
-  document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
-  $(id).classList.add("active");
-}
-
-function closeMenu() {
-  document.getElementById("hamburger").classList.remove("open");
-}
-
-function initModeSelection() {
-  document.querySelectorAll(".mode-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".mode-btn").forEach((b) => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      store.mode = btn.dataset.mode;
-    });
-  });
-}
-
-function refreshSetupView() {
-  const hasDeck = store.rawVocabulary && Object.keys(store.rawVocabulary).length > 0;
-  const total = hasDeck ? Object.keys(store.rawVocabulary).length : 0;
-
-  document.getElementById("setup-empty").style.display = hasDeck ? "none" : "block";
-  document.getElementById("setup-ready").style.display = hasDeck ? "block" : "none";
-
-  if (hasDeck) {
-    const count = Math.min(store.cardCount, total);
-    store.cardCount = count;
-    document.getElementById("deck-info-text").textContent = `${total} words loaded`;
-    document.getElementById("card-count-input").max = total;
-    document.getElementById("card-count-input").value = count;
-    document.getElementById("card-total-hint").textContent = `of ${total} total`;
-
-    document.querySelectorAll(".mode-btn").forEach((btn) => {
-      btn.classList.toggle("selected", btn.dataset.mode === store.mode);
-    });
-  }
-
-  document.getElementById("menu-info").textContent = hasDeck
-    ? `${total} words loaded`
-    : "No deck loaded";
-
-  const startBtn = document.getElementById("menu-start");
-  startBtn.disabled = !hasDeck;
-}
-
-function getCurrentMode() {
-  return store.mode === "C"
-    ? (Math.random() < 0.5 ? "A" : "B")
-    : store.mode;
-}
-
-function startGame() {
-  if (!store.rawVocabulary || Object.keys(store.rawVocabulary).length === 0) return;
-  closeMenu();
-  store.resetGame();
-  store.gameDeck = sampleRandom(store.rawVocabulary, store.cardCount);
-  startTime = Date.now();
-  showView("view-game");
-  renderCard();
-}
-
-function renderCard() {
+export function renderCard() {
   if (store.currentIndex >= store.gameDeck.length) { endGame(); return; }
   store.isAnswered = false;
   const deck = store.gameDeck;
@@ -97,7 +35,15 @@ function renderCard() {
 
   $("card-feedback").className = "feedback";
   $("card-feedback").textContent = "";
+  $("next-btn").style.display = "none";
+  store.cardStartTime = Date.now();
   startTimer(mode);
+}
+
+function getCurrentMode() {
+  return store.mode === "C"
+    ? (Math.random() < 0.5 ? "A" : "B")
+    : store.mode;
 }
 
 function startTimer(mode) {
@@ -107,7 +53,7 @@ function startTimer(mode) {
   bar.style.removeProperty("background");
 
   timer = new CountdownTimer(
-    TIMER_SECONDS,
+    store.timerSeconds,
     (remaining, total) => {
       const pct = (remaining / total) * 100;
       bar.style.width = `${pct}%`;
@@ -115,8 +61,9 @@ function startTimer(mode) {
     () => {
       if (!store.isAnswered) {
         store.isAnswered = true;
+        store.totalGameTime += Date.now() - store.cardStartTime;
         showFeedback(null, store.gameDeck[store.currentIndex], mode);
-        setTimeout(advanceCard, FEEDBACK_DELAY);
+        showNextBtn();
       }
     }
   );
@@ -131,7 +78,8 @@ function handleAnswer(btn, selected, current, mode) {
   const isCorrect = selected === correct;
   if (isCorrect) store.score++;
   showFeedback(selected, current, mode, isCorrect);
-  setTimeout(advanceCard, FEEDBACK_DELAY);
+  store.totalGameTime += Date.now() - store.cardStartTime;
+  showNextBtn();
 }
 
 function showFeedback(selected, current, mode, isCorrect) {
@@ -157,6 +105,14 @@ function showFeedback(selected, current, mode, isCorrect) {
   }
 }
 
+function showNextBtn() {
+  const isLast = store.currentIndex >= store.gameDeck.length - 1;
+  $("next-btn").innerHTML = isLast
+    ? "Finalizar"
+    : 'Next <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M6 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  $("next-btn").style.display = "flex";
+}
+
 function advanceCard() {
   store.currentIndex++;
   if (store.currentIndex >= store.gameDeck.length) {
@@ -170,7 +126,7 @@ function endGame() {
   if (timer) timer.stop();
   const total = store.gameDeck.length;
   const pct = total > 0 ? Math.round((store.score / total) * 100) : 0;
-  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  const elapsed = Math.round(store.totalGameTime / 1000);
 
   const pctEl = $("result-pct");
   if (pct >= 80) {
@@ -189,49 +145,11 @@ function endGame() {
   showView("view-results");
 }
 
-function playAgain() {
-  store.resetGame();
-  store.gameDeck = sampleRandom(store.rawVocabulary, store.cardCount);
-  startTime = Date.now();
-  showView("view-game");
-  renderCard();
-}
-
-function newDeck() {
-  localStorage.removeItem("vocab-data");
-  store.rawVocabulary = null;
-  store.resetGame();
-  document.getElementById("file-input").value = "";
-  document.getElementById("upload-error").style.display = "none";
-  refreshSetupView();
-  showView("view-setup");
-}
-
 function goToSetup() {
   if (timer) timer.stop();
   store.resetGame();
   refreshSetupView();
   showView("view-setup");
-}
-
-function loadDefaultDeck() {
-  const errorEl = document.getElementById("upload-error");
-  errorEl.textContent = "";
-  errorEl.style.display = "none";
-
-  try {
-    const el = document.getElementById("default-vocab-data");
-    if (!el || !el.dataset.value) throw new Error("Default deck data not found");
-    const data = JSON.parse(el.dataset.value);
-    validateVocabulary(data);
-    store.rawVocabulary = data;
-    saveToStorage(data);
-    refreshSetupView();
-    showView("view-setup");
-  } catch (err) {
-    errorEl.textContent = err.message;
-    errorEl.style.display = "block";
-  }
 }
 
 export function init() {
@@ -266,62 +184,12 @@ export function init() {
     document.getElementById("upload-error").style.display = "none";
   });
 
-  document.getElementById("menu-start").addEventListener("click", startGame);
-
-  document.getElementById("upload-inline-btn").addEventListener("click", () => {
-    document.getElementById("file-input").click();
-  });
-
-  document.getElementById("load-default-btn").addEventListener("click", loadDefaultDeck);
-
-  document.getElementById("file-input").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const errorEl = document.getElementById("upload-error");
-    errorEl.textContent = "";
-    errorEl.style.display = "none";
-
-    if (!file.name.endsWith(".json")) {
-      errorEl.textContent = "Please upload a .json file";
-      errorEl.style.display = "block";
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const data = JSON.parse(event.target.result);
-        validateVocabulary(data);
-        store.rawVocabulary = data;
-        saveToStorage(data);
-        refreshSetupView();
-        showView("view-setup");
-      } catch (err) {
-        errorEl.textContent = err.message;
-        errorEl.style.display = "block";
-      }
-    };
-    reader.onerror = () => {
-      errorEl.textContent = "Error reading file";
-      errorEl.style.display = "block";
-    };
-    reader.readAsText(file);
-  });
-
-  document.getElementById("card-count-input").addEventListener("input", (e) => {
-    const max = store.rawVocabulary ? Object.keys(store.rawVocabulary).length : 1;
-    let val = parseInt(e.target.value);
-    if (isNaN(val) || val < 1) val = 1;
-    if (val > max) val = max;
-    e.target.value = val;
-    store.cardCount = val;
-  });
-
-  document.getElementById("play-again-btn").addEventListener("click", playAgain);
+  document.getElementById("play-again-btn").addEventListener("click", goToSetup);
   document.getElementById("new-deck-btn").addEventListener("click", newDeck);
   document.getElementById("configure-btn").addEventListener("click", goToSetup);
+  document.getElementById("next-btn").addEventListener("click", advanceCard);
 
-  initModeSelection();
+  setupInit();
+  setupReadyInit();
   showView("view-setup");
 }

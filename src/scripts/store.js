@@ -6,10 +6,14 @@ export const store = {
   mode: "A",
   cardCount: 10,
   isAnswered: false,
+  timerSeconds: 10,
+  cardStartTime: 0,
+  totalGameTime: 0,
   resetGame() {
     this.gameDeck = [];
     this.currentIndex = 0;
     this.score = 0;
     this.isAnswered = false;
+    this.totalGameTime = 0;
   },
 };

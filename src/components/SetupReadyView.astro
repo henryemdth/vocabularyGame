@@ -1,0 +1,113 @@
+<div id="setup-ready" class="setup-ready" style="display:none">
+  <div class="deck-summary">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <rect
+        x="2"
+        y="3"
+        width="12"
+        height="10"
+        rx="1"
+        stroke="currentColor"
+        stroke-width="1.5"
+        fill="none"></rect>
+      <path
+        d="M5 3V2a1 1 0 011-1h4a1 1 0 011 1v1"
+        stroke="currentColor"
+        stroke-width="1.5"
+        fill="none"></path>
+    </svg>
+    <span id="deck-info-text">0 words loaded</span>
+  </div>
+
+  <div class="setup-section">
+    <p class="setup-label">Mode</p>
+    <div class="mode-grid">
+      <button class="mode-btn" data-mode="A">
+        <span class="mode-icon mode-icon-a">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M4 17l4-4 4 4 4-4 4 4"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"></path>
+            <path
+              d="M4 12l4-4 4 4 4-4 4 4"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              opacity="0.4"></path>
+          </svg>
+        </span>
+        <span class="mode-key">Mode A</span>
+        <span class="mode-desc">Meaning → Word</span>
+      </button>
+      <button class="mode-btn" data-mode="B">
+        <span class="mode-icon mode-icon-b">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M4 7l4 4 4-4 4 4 4-4"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"></path>
+            <path
+              d="M4 14l4 4 4-4 4 4 4-4"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              opacity="0.4"></path>
+          </svg>
+        </span>
+        <span class="mode-key">Mode B</span>
+        <span class="mode-desc">Word → Meaning</span>
+      </button>
+      <button class="mode-btn" data-mode="C">
+        <span class="mode-icon mode-icon-c">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 4v16M4 12h16"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"></path>
+            <circle cx="12" cy="12" r="2" fill="currentColor"></circle>
+          </svg>
+        </span>
+        <span class="mode-key">Mode C</span>
+        <span class="mode-desc">Mixed</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="setup-section">
+    <p class="setup-label">Cards to play</p>
+    <div class="count-row">
+      <input
+        type="number"
+        id="card-count-input"
+        min="1"
+        max="100"
+        value="10"
+      />
+      <span id="card-total-hint" class="card-total-hint">of 0 total</span>
+    </div>
+  </div>
+
+  <div class="setup-section">
+    <p class="setup-label">Time per card</p>
+    <div class="count-row">
+      <input
+        type="number"
+        id="timer-input"
+        min="3"
+        max="30"
+        value="10"
+      />
+      <span class="card-total-hint">seconds</span>
+    </div>
+  </div>
+</div>
+<button class="start-game-btn" id="menu-start" disabled>
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+    <path d="M5 3v16l14-8L5 3z" fill="currentColor"></path>
+  </svg>
+  Start Game
+</button>
